@@ -45,72 +45,71 @@ int status; //-1 not started, 0 started, 1 over
 int[] current; //row, col
 
 void arduinoSetup() {
-	arduino = new Arduino(this,Arduino.list()[2],57600);
-  arduino.pinMode(6,Arduino.OUTPUT);
-  arduino.pinMode(7,Arduino.OUTPUT);
-  arduino.pinMode(8,Arduino.OUTPUT);
-	//arduino.pinMode(3,Arduino.OUTPUT); //pwm pin
-	arduino.pinMode(5,Arduino.INPUT); //pushbutton
+  arduino = new Arduino(this, Arduino.list()[2], 57600);
+  arduino.pinMode(6, Arduino.OUTPUT);
+  arduino.pinMode(7, Arduino.OUTPUT);
+  arduino.pinMode(8, Arduino.OUTPUT);
+  //arduino.pinMode(3,Arduino.OUTPUT); //pwm pin
+  arduino.pinMode(5, Arduino.INPUT); //pushbutton
 }
 void setup() {
   surface.setTitle("Tic-Tac-Toe");
-	size(300,300);
-	//textAlign(CENTER,TOP);
-	//textFont(createFont("Arial",128,true)); //change font
-	play = new Button(110,135,80,30,"PLAY");
-	status = -1;
-	current = new int[2];
-	println((Object[])Arduino.list()); //cast to Object[] to hide warning
-	highlight = createShape(RECT,0,0,SIZE/3,SIZE/3); //TODO: remove?
-	arduinoSetup();
+  size(300, 300);
+  //textAlign(CENTER,TOP);
+  //textFont(createFont("Arial",128,true)); //change font
+  play = new Button(110, 135, 80, 30, "PLAY");
+  status = -1;
+  current = new int[2];
+  println((Object[])Arduino.list()); //cast to Object[] to hide warning
+  highlight = createShape(RECT, 0, 0, SIZE/3, SIZE/3); //TODO: remove?
+  arduinoSetup();
 }
 
 void hideHighlight() {
   for (int i=0; i<3; i++) {
     for (int j=0; j<3; j++) {
-      fill(color(204,204,204));
-      PShape temp = createShape(RECT,j*SIZE/3.0,i*SIZE/3.0,SIZE/3.0,SIZE/3.0);
+      fill(color(204, 204, 204));
+      PShape temp = createShape(RECT, j*SIZE/3.0, i*SIZE/3.0, SIZE/3.0, SIZE/3.0);
       shape(temp);
     }
   }
   drawBoard();
 }
 void drawBoard() {
-	//base(); //not necessary, removed for efficiency
-	textAlign(CENTER,TOP);
-	textFont(createFont("Arial",128,true)); //change font
-	//highlight.setVisible(false);
-	for (int i=0; i<3; i++) {
-		for (int j=0; j<3; j++) {
-			if (board[j][i]==0) {
-				continue;
-			}
-			float x = j*(SIZE/3.0)+(SIZE/6.0);
-			float y = i*(SIZE/3.0)-19;
-			fill(board[j][i]==X ? color(255,0,0):color(0,0,255)); //red for x, blue for o
-			text(board[j][i],x,y);
-		}
-	}
+  //base(); //not necessary, removed for efficiency
+  textAlign(CENTER, TOP);
+  textFont(createFont("Arial", 128, true)); //change font
+  //highlight.setVisible(false);
+  for (int i=0; i<3; i++) {
+    for (int j=0; j<3; j++) {
+      if (board[j][i]==0) {
+        continue;
+      }
+      float x = j*(SIZE/3.0)+(SIZE/6.0);
+      float y = i*(SIZE/3.0)-19;
+      fill(board[j][i]==X ? color(255, 0, 0):color(0, 0, 255)); //red for x, blue for o
+      text(board[j][i], x, y);
+    }
+  }
 }
 void setSpot(int x, int y, char arg) {
-	if (board[y][x]!=0) {
-		return;
-	}
-  arduino.analogWrite(3,(int)map(analogVal,0,1023,0,255)); //analog output
+  if (board[y][x]!=0) {
+    return;
+  }
+  arduino.analogWrite(3, (int)map(analogVal, 0, 1023, 0, 255)); //analog output
   board[y][x] = arg;
   drawBoard();
   if (gameOver()) {
-      println("DONE");
-      status = 1;
-      return;
+    println("DONE");
+    status = 1;
+    return;
   }
   if (arg==O) {
     return;
   }
 
   int[] loc = solver.calculate(board);
-  setSpot(loc[0],loc[1],O);
-
+  setSpot(loc[0], loc[1], O);
 }
 boolean gameOver() {
   for (int i=0; i<3; i++) {
@@ -136,61 +135,60 @@ void arduinoLoop() { //for the Arduino part
     if (status==-1) {
       hidePlayButton();
       //return;
-    }
-    else {
-      setSpot(current[1],current[0],X);
+    } else {
+      setSpot(current[1], current[0], X);
     }
   }
   if (status!=0) { //game hasn't started
     return;
   }
-	analogVal = arduino.analogRead(0);
-	//analogVal = int(random(1024)); //TESTING
-	println(analogVal);
-	int temp = int(map(analogVal,0,1023,0,8));
-  arduino.digitalWrite(current[0]+6,Arduino.LOW);
-	current[0] = temp%3;
-	current[1] = temp/3;
-  arduino.digitalWrite(current[0]+6,Arduino.HIGH);
-	/* TESTING
-	if (640<analogVal && analogVal<768) {
+  analogVal = arduino.analogRead(0);
+  //analogVal = int(random(1024)); //TESTING
+  println(analogVal);
+  int temp = int(map(analogVal, 0, 1023, 0, 8));
+  arduino.digitalWrite(current[0]+6, Arduino.LOW);
+  current[0] = temp%3;
+  current[1] = temp/3;
+  arduino.digitalWrite(current[0]+6, Arduino.HIGH);
+  /* TESTING
+   	if (640<analogVal && analogVal<768) {
    setSpot(current[0],current[1],X);
    setSpot(1,0,X);
-  }*/
+   }*/
 }
 void base() {
-	background(204);
-	stroke(0);
-	strokeWeight(4);
-	for (int i=0; i<=3; i++) {
-		line(i*SIZE/3,0,i*SIZE/3,SIZE); //vertical
-		line(0,i*SIZE/3,SIZE,i*SIZE/3); //horizontal
-	}
+  background(204);
+  stroke(0);
+  strokeWeight(4);
+  for (int i=0; i<=3; i++) {
+    line(i*SIZE/3, 0, i*SIZE/3, SIZE); //vertical
+    line(0, i*SIZE/3, SIZE, i*SIZE/3); //horizontal
+  }
 }
 void highlightSquare() {
-	hideHighlight();
-	highlight = createShape(RECT,current[0]*SIZE/3.0,current[1]*SIZE/3.0,SIZE/3,SIZE/3);
-	highlight.setFill(color(200,200,255)); //TODO: remove?...
-	highlight.setVisible(true); //...
-	shape(highlight);
+  hideHighlight();
+  highlight = createShape(RECT, current[0]*SIZE/3.0, current[1]*SIZE/3.0, SIZE/3, SIZE/3);
+  highlight.setFill(color(200, 200, 255)); //TODO: remove?...
+  highlight.setVisible(true); //...
+  shape(highlight);
 }
 void draw() {
-	if (status==1) {
+  if (status==1) {
     hideHighlight();
-		noLoop();
-		return;
-	}
-	arduinoLoop();
-	if (status==0) {
-		//highlight.setVisible(false);
-		highlightSquare();
-		drawBoard();
-	}
+    noLoop();
+    return;
+  }
+  arduinoLoop();
+  if (status==0) {
+    //highlight.setVisible(false);
+    highlightSquare();
+    drawBoard();
+  }
   //delay(1000); //TESTING
 }
 
 boolean withinButton() {
-	return (play.X<mouseX && mouseX<play.X+play.width) && (play.Y<mouseY && mouseY<play.Y+play.height);
+  return (play.X<mouseX && mouseX<play.X+play.width) && (play.Y<mouseY && mouseY<play.Y+play.height);
 }
 void hidePlayButton() {
   background(204);
@@ -199,10 +197,10 @@ void hidePlayButton() {
   play.hide();
 }
 void mousePressed() {
-	if (status!=-1) {
-		return;
-	}
-	if (withinButton()) {
-		hidePlayButton();
-	}
+  if (status!=-1) {
+    return;
+  }
+  if (withinButton()) {
+    hidePlayButton();
+  }
 }
