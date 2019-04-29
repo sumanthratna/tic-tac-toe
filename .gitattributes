@@ -1,2 +1,4 @@
-lib/** linguist-generated
+lib/** linguist-vendored
+lib/arduino/reference/** linguist-documentation
 src/** linguist-generated=false
+src/arduino.ino linguist-vendored
