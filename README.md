@@ -1,5 +1,7 @@
 # tic-tac-toe
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/43be375eddd9441c93cb083f386c8cf8)](https://app.codacy.com/app/sumanthratna/tic-tac-toe?utm_source=github.com&utm_medium=referral&utm_content=sumanthratna/tic-tac-toe&utm_campaign=Badge_Grade_Dashboard)
+
 Tic-Tac-Toe using the [Processing](processing.org "Processing") language, with input from an [Arduino](arduino.cc "Arduino") using the [Firmata protocol](github.com/firmata/protocol "Firmata"). There is a slight lack of documentation/comments for the helper classes. If you wish, you may attempt to interpret the code and make a pull request with the correct comments. Also, the code is very inefficient - you'll see tons of nested `for` loops. Please don't change this, this repository is meant to be for beginners, so I want this to be readable. If I have the time, I'll write a tutorial to walk you through how to develop this from scratch. Throughout the code there are various TODOs - if you want to work on your Processing/Java syntax or your OOP skills, implement the TODOs.
 
 ## Preliminaries
