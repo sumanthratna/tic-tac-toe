@@ -17,7 +17,7 @@ Tic-Tac-Toe using the [Processing](https://processing.org/) language, with input
 
 ### Loading `StandardFirmata`
 
-Upload the `src/arduino.ino` file to your Arduino. This is the `StandardFirmata` file, so it's also available in the Arduino IDE (File > Examples). If you're using the Arduino Create web IDE, there should be a tab on the left called "Examples"—click this and search for "StandardFirmata" and you should be able to find the file.
+Upload the [`src/arduino.ino`](./src/arduino.ino) file to your Arduino. This is the `StandardFirmata` file, so it's also available in the Arduino IDE (File > Examples). If you're using the Arduino Create web IDE, there should be a tab on the left called "Examples"—click this and search for "StandardFirmata" and you should be able to find the file.
 
 The `StandardFirmata` file, simply put, works by sending data from the Arduino to the computer with a certain Baud rate (in our case, `57600`). You shouldn't need to install anything else—I've included all the necessary libraries in the folder `lib`.
 
@@ -32,5 +32,5 @@ The `StandardFirmata` file, simply put, works by sending data from the Arduino t
 
 ### Loading the Processing Code
 
-1.  Open your Processing IDE and open the `src/processing/processing.pde` file. There should be 4 "program" tabs at the top.
+1.  Open your Processing IDE and open the [`src/processing/processing.pde`](./src/processing/processing.pde) file. There should be 4 "program" tabs at the top.
 2.  Click the run button in the top-left corner of the Processing IDE. If your Arduino has been wired properly, you should be able to play the game correctly.
